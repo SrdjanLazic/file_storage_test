@@ -6,17 +6,17 @@ public class Main {
 
 
         //fileStorage.createFolder("D:","sasfagg{1..20}");
-        User user = new User("blabla", "123");
-        StorageModel storageModel = new StorageModel(user, "D:/storage1");
-
-        FileStorage fileStorage = new LocalFileStorageImplementation(storageModel);
-
-        storageModel.getUnsupportedExtensions().add(".txt");
+//        User user = new User("blabla", "123");
+//        StorageModel storageModel = new StorageModel(user, "D:/storage1");
+//
+//        FileStorage fileStorage = new LocalFileStorageImplementation(storageModel);
+//
+//        storageModel.getUnsupportedExtensions().add(".txt");
 
 
 //        fileStorage.createFolder("download");
 //        fileStorage.createFile("/download", "fajl.txt");
-        fileStorage.createFile("tekstneki.txt");
+        //fileStorage.createFile("tekstneki.txt");
         //Scanner input =  new Scanner(System.in);
         //String command = input.nextLine();
 
