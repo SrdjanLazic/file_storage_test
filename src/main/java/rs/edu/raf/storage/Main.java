@@ -1,10 +1,26 @@
 package rs.edu.raf.storage;
 
+import rs.edu.raf.storage.storage_management.FileStorage;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+
 public class Main {
 
     public static void main(String[] args) {
 
+        String impl = args.length>0 ? args[0] : "local";
+        System.out.println(impl);
+        String className = impl.equals("drive") ? "rs.edu.raf.storage.GoogleDriveAPI" : "rs.edu.raf.storage.LocalFileStorageImplementation";
+        System.out.println(className);
+        FileStorage fileStorage;
+        try {
+            fileStorage = (FileStorage) Class.forName(className).getDeclaredConstructor().newInstance();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
+//        fileStorage.createFile();
         //fileStorage.createFolder("D:","sasfagg{1..20}");
 //        User user = new User("blabla", "123");
 //        StorageModel storageModel = new StorageModel(user, "D:/storage1");
