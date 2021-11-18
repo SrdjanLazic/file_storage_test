@@ -1,24 +1,170 @@
 package rs.edu.raf.storage;
 
+import rs.edu.raf.storage.enums.Privileges;
+import rs.edu.raf.storage.exceptions.*;
 import rs.edu.raf.storage.storage_management.FileStorage;
+import rs.edu.raf.storage.storage_management.StorageManager;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
 
     public static void main(String[] args) {
 
+
+        Scanner scanner = new Scanner(System.in);
         String impl = args.length>0 ? args[0] : "local";
-        System.out.println(impl);
+//        System.out.println(impl);
+//        String className = impl.equals("drive") ? "rs.edu.raf.storage.GoogleDriveAPI" : "rs.edu.raf.storage.LocalFileStorageImplementation";
+//        System.out.println(className);
+//        FileStorage fileStorage;
+//        try {
+//            fileStorage = (FileStorage) Class.forName(className).getDeclaredConstructor().newInstance();
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
         String className = impl.equals("drive") ? "rs.edu.raf.storage.GoogleDriveAPI" : "rs.edu.raf.storage.LocalFileStorageImplementation";
-        System.out.println(className);
-        FileStorage fileStorage;
+
         try {
-            fileStorage = (FileStorage) Class.forName(className).getDeclaredConstructor().newInstance();
-        }catch (Exception e) {
+            Class.forName(className);
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        // TODO: ispis da li je to postojece skladiste ili pravimo novo
+
+        FileStorage fileStorage = StorageManager.getFileStorage();
+
+        System.out.println("Unesite korisnicko ime:");
+        String username = scanner.nextLine();
+        System.out.println("Unesite lozinku:");
+        String password = scanner.nextLine();
+
+        if(impl.equals("drive"))
+            System.out.println("Unesite naziv za skladiste:");
+        else
+            System.out.println("Unesite putanju korenskog direktorijuma skladista:");
+
+        String storage = scanner.nextLine();
+
+        try {
+            fileStorage.initializeStorage(storage, username, password);
+        } catch (UserNotFoundException e){
+            e.printStackTrace();
+        }
+
+        String choice;
+        while(true){
+            System.out.println("\nIzaberite jednu od opcija upisivanjem zeljnog broja:");
+            System.out.println("-----------------------------------------------------");
+            System.out.println("1. Rad sa korisnicima (admin only)");
+            System.out.println("2. Konfiguracija skladista (admin only)");
+            System.out.println("3. Operacije nad skladistem");
+
+            choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    System.out.println("\nIzaberite jednu od opcija upisivanjem zeljnog broja:");
+                    System.out.println("-----------------------------------------------------");
+                    System.out.println("1. Kreiranje novog korisnika");
+                    System.out.println("2. Uklanjanje korisnika");
+                    System.out.println("3. Odjavljivanje korisnika (logout)");
+                    System.out.println("4. Prijavljivanje korisnika (login)");
+                    System.out.println("5. Postavljanje privilegija nad datim direktorijumom");
+                    System.out.println("6. Nazad");
+
+                    choice = scanner.nextLine();
+
+                    switch (choice) {
+                        case "1":
+                            System.out.println("Unesite korisnicko ime novog korisnika:");
+                            username = scanner.nextLine();
+                            System.out.println("Unesite lozinku novog korisnika:");
+                            password = scanner.nextLine();
+                            // U petlji trazi od korisnika unosenje privilegija
+                            while (true) {
+                                System.out.println("Unesite najvisu privilegiju koje zelite da novi korisnik ima. \nPrivilegije su (od najvise ka najnizoj): DELETE, CREATE, DOWNLOAD, VIEW");
+                                String privilege = scanner.nextLine();
+                                if (privilege.equalsIgnoreCase("DELETE")) {
+                                    try {
+                                        fileStorage.addNewUser(username, password, Set.of(Privileges.DELETE));
+                                    } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e){
+                                        System.out.println("\n-----------------------------------\n"+e.getMessage()+"\n-----------------------------------\n");
+                                        break;
+                                    }
+                                    break;
+                                } else if (privilege.equalsIgnoreCase("CREATE")) {
+                                    try {
+                                        fileStorage.addNewUser(username, password, Set.of(Privileges.CREATE));
+                                    } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e){
+                                        System.out.println("\n-----------------------------------\n"+e.getMessage()+"\n-----------------------------------\n");
+                                        break;
+                                    }
+                                    break;
+                                } else if (privilege.equalsIgnoreCase("DOWNLOAD")) {
+                                    try {
+                                        fileStorage.addNewUser(username, password, Set.of(Privileges.DOWNLOAD));
+                                    } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e){
+                                        System.out.println("\n-----------------------------------\n"+e.getMessage()+"\n-----------------------------------\n");
+                                        break;
+                                    }
+                                    break;
+                                } else if (privilege.equalsIgnoreCase("VIEW")) {
+                                    try {
+                                        fileStorage.addNewUser(username, password, Set.of(Privileges.VIEW));
+                                    } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e){
+                                        System.out.println("\n-----------------------------------\n"+e.getMessage()+"\n-----------------------------------\n");
+                                        break;
+                                    }
+                                    break;
+                                } else {
+                                    System.out.println("Niste uneli validnu privilegiju. Pokusajte ponovo.");
+                                }
+                            }
+                            break;
+
+                        case "2":
+                            while(true) {
+                                System.out.println("Unesite korisnicko ime korisnika kojeg zelite da uklonite:");
+                                username = scanner.nextLine();
+                                try {
+                                    fileStorage.removeUser(username);
+                                    break;
+                                } catch(UserNotFoundException | InsufficientPrivilegesException | CurrentUserIsNullException e){
+                                    System.out.println("\n-----------------------------------\n"+e.getMessage()+"\n-----------------------------------\n");
+                                }
+                            }
+                            break;
+                        case "3":
+                            break;
+                        case "4":
+                            break;
+                        case "5":
+                            break;
+                        case "6":
+                            break;
+
+                        default:
+                            System.out.println("\nNiste uneli validan broj. Pokusajte ponovo.");
+                            break;
+                    }
+                    break;
+
+                case "2":
+                    break;
+
+                case "3":
+                    break;
+
+                default:
+                    System.out.println("\nNiste uneli validan broj. Pokusajte ponovo.");
+                    break;
+            }
+        }
+
+
+
 
 //        fileStorage.createFile();
         //fileStorage.createFolder("D:","sasfagg{1..20}");
