@@ -41,9 +41,9 @@ public class Main {
         System.out.println("Unesite lozinku:");
         String password = scanner.nextLine();
 
-        if(impl.equals("drive"))
-            System.out.println("Unesite naziv za skladiste:");
-        else
+//        if(impl.equals("drive"))
+//            System.out.println("Unesite putanju za skladiste:");
+//        else
             System.out.println("Unesite putanju korenskog direktorijuma skladista:");
 
         String storage = scanner.nextLine();
@@ -152,6 +152,7 @@ public class Main {
                                     System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                 }
                                 break;
+
                             case "4":
                                 System.out.println("Unesite vase korisnicko ime:");
                                 username = scanner.nextLine();
@@ -166,8 +167,60 @@ public class Main {
                                 }
 
                                 break;
+
                             case "5":
+                                System.out.println("Unesite korisnicko ime korisnika kom zelite postaviti privilegiju na nekom direktorijumu:");
+                                username = scanner.nextLine();
+                                if(impl.equals("drive")) {
+                                    System.out.println("Unesite naziv direktorijuma gde zelite postaviti privilegiju:");
+                                } else {
+                                    System.out.println("Unesite putanju korenskog direktorijuma skladista:");
+                                }
+                                // U petlji trazi od korisnika unosenje privilegija
+                                while (true) {
+                                    System.out.println("Unesite najvisu privilegiju koje zelite da novi korisnik ima unutar tog direktorijuma. \nPrivilegije su (od najvise ka najnizoj): DELETE, CREATE, DOWNLOAD, VIEW");
+                                    String privilege = scanner.nextLine();
+                                    if (privilege.equalsIgnoreCase("DELETE")) {
+                                        try {
+                                            fileStorage.setFolderPrivileges(username, password, Set.of(Privileges.DELETE));
+                                            System.out.println("Uspesno dodata privilegija unetom korisniku na odabranom direktorijumu.");
+                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                            System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
+                                            break;
+                                        }
+                                    } else if (privilege.equalsIgnoreCase("CREATE")) {
+                                        try {
+                                            fileStorage.setFolderPrivileges(username, password, Set.of(Privileges.CREATE));
+                                            System.out.println("Uspesno dodata privilegija unetom korisniku na odabranom direktorijumu.");
+                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                            System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
+                                            break;
+                                        }
+                                        break;
+                                    } else if (privilege.equalsIgnoreCase("DOWNLOAD")) {
+                                        try {
+                                            fileStorage.setFolderPrivileges(username, password, Set.of(Privileges.DOWNLOAD));
+                                            System.out.println("Uspesno dodata privilegija unetom korisniku na odabranom direktorijumu.");
+                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                            System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
+                                            break;
+                                        }
+                                        break;
+                                    } else if (privilege.equalsIgnoreCase("VIEW")) {
+                                        try {
+                                            fileStorage.setFolderPrivileges(username, password, Set.of(Privileges.VIEW));
+                                            System.out.println("Uspesno dodata privilegija unetom korisniku na odabranom direktorijumu.");
+                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                            System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
+                                            break;
+                                        }
+                                        break;
+                                    } else {
+                                        System.out.println("\nNiste uneli validnu privilegiju. Pokusajte ponovo.\n");
+                                    }
+                                }
                                 break;
+
                             case "6":
                                 break;
 
