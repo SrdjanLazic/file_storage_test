@@ -295,6 +295,12 @@ public class Main {
                         System.out.println("2. Kreiranje novog direktorijuma na zeljenoj putanji");
                         System.out.println("3. Kreiranje novog fajla direktno na skladistu");
                         System.out.println("4. Kreiranje novog fajla na zeljenoj putanji");
+                        System.out.println("5. Brisanje fajla iz skladista");
+                        System.out.println("6. Preuzimanje fajla iz skladista na lokalni download folder za skladiste");
+                        System.out.println("7. Premestanje fajla iz skladista sa jednog mesta na drugo");
+                        System.out.println("8. Smestanje fajla u skladiste");
+                        System.out.println("9. Pregled svih fajlova iz odredjenog direktorijuma ");
+                        System.out.println("10. Napredni pregled svih fajlova iz odredjenog direktorijuma ");
 
                         choice = scanner.nextLine();
 
