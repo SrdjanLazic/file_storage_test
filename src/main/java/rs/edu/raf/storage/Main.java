@@ -405,6 +405,8 @@ public class Main {
                                 break;
                             case "10":
                                 break;
+                            case "11":
+                                break;
 
                             default:
                                 System.out.println("\nNiste uneli validan broj. Pokusajte ponovo.");
