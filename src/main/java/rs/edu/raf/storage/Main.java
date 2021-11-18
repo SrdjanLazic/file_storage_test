@@ -306,11 +306,11 @@ public class Main {
 
                         switch (choice) {
                             case "1":
-                                System.out.println("\nUnesite naziv foldera:");
+                                System.out.println("\nUnesite naziv direktorijuma za kreiranje:");
                                 String folderName = scanner.nextLine();
                                 try {
                                     fileStorage.createFolder(folderName);
-                                    System.out.println("\nUspesno kreiran folder.");
+                                    System.out.println("\nUspesno kreiran direktorijum.");
                                     break;
                                 } catch (InsufficientPrivilegesException | CurrentUserIsNullException e) {
                                     System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
@@ -318,12 +318,23 @@ public class Main {
                                 break;
 
                             case "2":
-
-                                System.out.println("Unesite korisnicko ime korisnika kojeg zelite da uklonite:");
-                                username = scanner.nextLine();
+                                String destinationFolderName;
+                                if(impl.equals("drive")) {
+                                    System.out.println("\nUnesite naziv destinacionog direktorijuma:");
+                                    destinationFolderName = scanner.nextLine();
+                                } else {
+                                    System.out.println("Unesite putanju destinacionog direktorijuma:");
+                                    destinationFolderName = scanner.nextLine();
+                                }
+                                System.out.println("\nUnesite naziv jednog ili vise direktorijuma da kreirate na odabranoj lokaciji:");
+                                String naziviFoldera = scanner.nextLine();
+                                String[] stringovi = naziviFoldera.split(",");
+                                for(int i = 0; i < stringovi.length; i++) {
+                                    stringovi[i] = stringovi[i].replace(" ", "");
+                                }
                                 try {
-                                    fileStorage.removeUser(username);
-                                    System.out.println("Uspesno uklonjen korisnik.");
+                                    fileStorage.createFolder(destinationFolderName, stringovi);
+                                    System.out.println("\nUspesno kreirani direktorijumi na zadatoj putanji.");
                                     break;
                                 } catch (UserNotFoundException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
                                     System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
@@ -341,15 +352,25 @@ public class Main {
                                 break;
 
                             case "4":
-                                System.out.println("Unesite vase korisnicko ime:");
-                                username = scanner.nextLine();
-                                System.out.println("Unesite vasu lozinku:");
-                                password = scanner.nextLine();
+                                String targetFolderName;
+                                if(impl.equals("drive")) {
+                                    System.out.println("\nUnesite naziv destinacionog direktorijuma:");
+                                    targetFolderName = scanner.nextLine();
+                                } else {
+                                    System.out.println("Unesite putanju destinacionog direktorijuma:");
+                                    targetFolderName = scanner.nextLine();
+                                }
+                                System.out.println("\nUnesite naziv jednog ili vise fajla da kreirate na odabranoj lokaciji:");
+                                String naziviFajlova = scanner.nextLine();
+                                String[] strings = naziviFajlova.split(",");
+                                for(int i = 0; i < strings.length; i++) {
+                                    strings[i] = strings[i].replace(" ", "");
+                                }
                                 try {
-                                    fileStorage.login(username, password);
-                                    System.out.println("\nKorisnik uspesno prijavljen.");
+                                    fileStorage.createFolder(targetFolderName, strings);
+                                    System.out.println("\nUspesno kreirani fajlovi na zadatoj putanji.");
                                     break;
-                                } catch (UserAlreadyLoggedInException | UserNotFoundException | CurrentUserIsNullException e) {
+                                } catch (UserNotFoundException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
                                     System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                 }
 
