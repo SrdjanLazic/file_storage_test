@@ -94,7 +94,6 @@ public class Main {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
                                         }
-                                        break;
                                     } else if (privilege.equalsIgnoreCase("CREATE")) {
                                         try {
                                             fileStorage.addNewUser(username, password, Set.of(Privileges.CREATE));
@@ -142,6 +141,18 @@ public class Main {
                             case "3":
                                 break;
                             case "4":
+                                System.out.println("Unesite vase korisnicko ime:");
+                                username = scanner.nextLine();
+                                System.out.println("Unesite vasu lozinku:");
+                                password = scanner.nextLine();
+                                try {
+                                    fileStorage.login(username, password);
+                                    System.out.println("\nKorisnik uspesno prijavljen.");
+                                    break;
+                                } catch (UserAlreadyLoggedInException | UserNotFoundException | CurrentUserIsNullException e) {
+                                    System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
+                                }
+
                                 break;
                             case "5":
                                 break;
@@ -153,6 +164,7 @@ public class Main {
                         }
                         break;
                     }
+                    break;
 
                 case "2":
                     break;
