@@ -179,6 +179,59 @@ public class Main {
                     break;
 
                 case "2":
+                    while (true) {
+                        System.out.println("\nIzaberite jednu od opcija upisivanjem zeljenog broja:");
+                        System.out.println("-----------------------------------------------------");
+                        System.out.println("1. Ogranicavanje ekstenzije na nivou skladista");
+                        System.out.println("2. Ogranicavanje velicine skladista");
+                        System.out.println("3. Ogranicavanje broja fajlova u folderu");
+                        System.out.println("4. Nazad");
+
+                        choice = scanner.nextLine();
+                        switch (choice) {
+                            case "1":
+                                System.out.println("\nUnesite ekstenziju koju zelite da zabranite u skladistu:");
+                                String extension = scanner.nextLine();
+                                try {
+                                    fileStorage.restrictExtension(extension);
+                                    System.out.println("\nZabrana ekstenzije uspesno dodata.");
+                                } catch (InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                    System.out.println("\n-----------------------------------\n"+e.getMessage()+"\n-----------------------------------\n");
+                                    break;
+                                }
+                                break;
+                            case "2":
+                                System.out.println("\nUnesite velicinu u bajtovima na koju zelite da ogranicite velicinu skladista:");
+                                String size = scanner.nextLine();
+                                try {
+                                    fileStorage.limitStorageSize(Long.parseLong(size));
+                                    System.out.println("\nVelicina skladista uspesno ogranicena.");
+                                } catch (InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                    System.out.println("\n-----------------------------------\n"+e.getMessage()+"\n-----------------------------------\n");
+                                    break;
+                                }
+                                break;
+                            case "3":
+                                if(impl.equalsIgnoreCase("drive"))
+                                    System.out.println("\nUnesite naziv foldera koji zelite da ogranicite:");
+                                else
+                                    System.out.println("\nUnesite relativnu putanju do foldera koji zelite da ogranicite:");
+                                String path = scanner.nextLine();
+                                System.out.println("\nUnesite broj fajlova na koji zelite da ogranicite folder:");
+                                String numberOfFiles = scanner.nextLine();
+                                try {
+                                    fileStorage.limitNumberOfFiles(Integer.parseInt(numberOfFiles), path);
+                                    System.out.println("\nBroj fajlova uspesno ogranicen");
+                                } catch (InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                    System.out.println("\n-----------------------------------\n"+e.getMessage()+"\n-----------------------------------\n");
+                                    break;
+                                }
+                                break;
+                            case "4":
+                                break;
+                        }
+                        break;
+                    }
                     break;
 
                 case "3":
