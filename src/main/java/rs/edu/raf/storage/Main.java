@@ -61,6 +61,7 @@ public class Main {
             System.out.println("1. Rad sa korisnicima (admin only)");
             System.out.println("2. Konfiguracija skladista (admin only)");
             System.out.println("3. Operacije nad skladistem");
+            System.out.println("4. Izlaz iz programa");
 
             choice = scanner.nextLine();
             switch (choice) {
@@ -90,6 +91,7 @@ public class Main {
                                     if (privilege.equalsIgnoreCase("DELETE")) {
                                         try {
                                             fileStorage.addNewUser(username, password, Set.of(Privileges.DELETE));
+                                            System.out.println("Uspesno dodat novi korisnik.");
                                         } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
@@ -98,6 +100,7 @@ public class Main {
                                     } else if (privilege.equalsIgnoreCase("CREATE")) {
                                         try {
                                             fileStorage.addNewUser(username, password, Set.of(Privileges.CREATE));
+                                            System.out.println("Uspesno dodat novi korisnik.");
                                         } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
@@ -106,6 +109,7 @@ public class Main {
                                     } else if (privilege.equalsIgnoreCase("DOWNLOAD")) {
                                         try {
                                             fileStorage.addNewUser(username, password, Set.of(Privileges.DOWNLOAD));
+                                            System.out.println("Uspesno dodat novi korisnik.");
                                         } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
@@ -114,13 +118,14 @@ public class Main {
                                     } else if (privilege.equalsIgnoreCase("VIEW")) {
                                         try {
                                             fileStorage.addNewUser(username, password, Set.of(Privileges.VIEW));
+                                            System.out.println("Uspesno dodat novi korisnik.");
                                         } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
                                         }
                                         break;
                                     } else {
-                                        System.out.println("Niste uneli validnu privilegiju. Pokusajte ponovo.");
+                                        System.out.println("\nNiste uneli validnu privilegiju. Pokusajte ponovo.\n");
                                     }
                                 }
 
@@ -132,6 +137,7 @@ public class Main {
                                 username = scanner.nextLine();
                                 try {
                                     fileStorage.removeUser(username);
+                                    System.out.println("Uspesno uklonjen korisnik.");
                                     break;
                                 } catch (UserNotFoundException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
                                     System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
@@ -140,6 +146,12 @@ public class Main {
                                 break;
 
                             case "3":
+                                try {
+                                    fileStorage.logout();
+                                    System.out.println("Uspesno izlogovan trenutni korisnik.");
+                                }catch (CurrentUserIsNullException e){
+                                    System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
+                                }
                                 break;
                             case "4":
                                 break;
@@ -160,6 +172,9 @@ public class Main {
                 case "3":
                     break;
 
+                case "4":
+                    System.out.println("Izlazenje iz programa...\n Dovidjenja!");
+                    System.exit(0);
                 default:
                     System.out.println("\nNiste uneli validan broj. Pokusajte ponovo.");
                     break;
