@@ -17,17 +17,20 @@ application {
 //#TODO srediti ovaj $impl
 run {
     standardInput = System.in
+    if(!hasProperty('impl')) ext.impl = 'local'
     args = ["$impl"]
 }
 
 dependencies {
-    compile 'com.google.api-client:google-api-client:1.23.0'
-    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
-    compile 'com.google.apis:google-api-services-drive:v3-rev110-1.23.0'
+    implementation 'com.google.api-client:google-api-client:1.23.0'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    implementation 'com.google.apis:google-api-services-drive:v3-rev110-1.23.0'
+    implementation 'rs.edu.raf:file-storage-specification:1.0'
+    if(!hasProperty('impl')) ext.impl = 'local'
     if("$impl" == "drive") {
-        compile 'rs.edu.raf:file-storage-drive-implementation:1.0'
+        runtimeOnly 'rs.edu.raf:file-storage-drive-implementation:1.0'
     }else {
-        compile 'rs.edu.raf:file-storage-local-implementation:1.0'
+        runtimeOnly 'rs.edu.raf:file-storage-local-implementation:1.0'
     }
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
