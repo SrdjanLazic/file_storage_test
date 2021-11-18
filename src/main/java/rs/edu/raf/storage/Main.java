@@ -300,54 +300,15 @@ public class Main {
 
                         switch (choice) {
                             case "1":
-                                System.out.println("Unesite korisnicko ime novog korisnika:");
-                                username = scanner.nextLine();
-                                System.out.println("Unesite lozinku novog korisnika:");
-                                password = scanner.nextLine();
-                                // U petlji trazi od korisnika unosenje privilegija
-                                while (true) {
-                                    System.out.println("Unesite najvisu privilegiju koje zelite da novi korisnik ima. \nPrivilegije su (od najvise ka najnizoj): DELETE, CREATE, DOWNLOAD, VIEW");
-                                    String privilege = scanner.nextLine();
-                                    if (privilege.equalsIgnoreCase("DELETE")) {
-                                        try {
-                                            fileStorage.addNewUser(username, password, Set.of(Privileges.DELETE));
-                                            System.out.println("Uspesno dodat novi korisnik.");
-                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
-                                            System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
-                                            break;
-                                        }
-                                    } else if (privilege.equalsIgnoreCase("CREATE")) {
-                                        try {
-                                            fileStorage.addNewUser(username, password, Set.of(Privileges.CREATE));
-                                            System.out.println("Uspesno dodat novi korisnik.");
-                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
-                                            System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
-                                            break;
-                                        }
-                                        break;
-                                    } else if (privilege.equalsIgnoreCase("DOWNLOAD")) {
-                                        try {
-                                            fileStorage.addNewUser(username, password, Set.of(Privileges.DOWNLOAD));
-                                            System.out.println("Uspesno dodat novi korisnik.");
-                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
-                                            System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
-                                            break;
-                                        }
-                                        break;
-                                    } else if (privilege.equalsIgnoreCase("VIEW")) {
-                                        try {
-                                            fileStorage.addNewUser(username, password, Set.of(Privileges.VIEW));
-                                            System.out.println("Uspesno dodat novi korisnik.");
-                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
-                                            System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
-                                            break;
-                                        }
-                                        break;
-                                    } else {
-                                        System.out.println("\nNiste uneli validnu privilegiju. Pokusajte ponovo.\n");
-                                    }
+                                System.out.println("\nUnesite naziv foldera:");
+                                String folderName = scanner.nextLine();
+                                try {
+                                    fileStorage.createFolder(folderName);
+                                    System.out.println("\nUspesno kreiran folder.");
+                                    break;
+                                } catch (InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                    System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                 }
-
                                 break;
 
                             case "2":
