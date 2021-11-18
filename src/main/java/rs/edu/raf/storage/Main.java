@@ -235,7 +235,15 @@ public class Main {
                     break;
 
                 case "3":
-                    break;
+                    while(true){
+                        System.out.println("\nIzaberite jednu od opcija upisivanjem zeljenog broja:");
+                        System.out.println("-----------------------------------------------------");
+                        System.out.println("1. Kreiranje novog direktorijuma direktno na skladistu");
+                        System.out.println("2. Kreiranje novog direktorijuma na zeljenoj putanji");
+                        System.out.println("3. Kreiranje novog fajla direktno na skladistu");
+                        System.out.println("4. Kreiranje novog fajla na zeljenoj putanji");
+                    }
+//                    break;
 
                 case "4":
                     System.out.println("Izlazenje iz programa...\n Dovidjenja!");
