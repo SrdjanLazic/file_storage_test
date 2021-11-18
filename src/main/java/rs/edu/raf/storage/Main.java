@@ -180,7 +180,7 @@ public class Main {
                                 if(impl.equals("drive")) {
                                     System.out.println("\nUnesite naziv direktorijuma gde zelite postaviti privilegiju:");
                                 } else {
-                                    System.out.println("\nUnesite putanju korenskog direktorijuma skladista:");
+                                    System.out.println("\nUnesite relativnu putanju u skladistu:");
                                 }
                                 String path = scanner.nextLine();
                                 // U petlji trazi od korisnika unosenje privilegija
