@@ -63,7 +63,7 @@ public class Main {
         while(true){
             System.out.println("\nIzaberite jednu od opcija upisivanjem zeljenog broja:");
             System.out.println("-----------------------------------------------------");
-            System.out.println("1. Rad sa korisnicima (admin only)");
+            System.out.println("1. Rad sa korisnicima");
             System.out.println("2. Konfiguracija skladista (admin only)");
             System.out.println("3. Operacije nad skladistem");
             System.out.println("4. Izlaz iz programa");
@@ -74,11 +74,11 @@ public class Main {
                     while (true) {
                         System.out.println("\nIzaberite jednu od opcija upisivanjem zeljenog broja:");
                         System.out.println("-----------------------------------------------------");
-                        System.out.println("1. Kreiranje novog korisnika");
-                        System.out.println("2. Uklanjanje korisnika");
-                        System.out.println("3. Odjavljivanje korisnika (logout)");
-                        System.out.println("4. Prijavljivanje korisnika (login)");
-                        System.out.println("5. Postavljanje privilegija nad datim direktorijumom");
+                        System.out.println("1. Kreiranje novog korisnika (admin only)");
+                        System.out.println("2. Uklanjanje korisnika (admin only)");
+                        System.out.println("3. Odjavljivanje korisnika - logout");
+                        System.out.println("4. Prijavljivanje korisnika - login");
+                        System.out.println("5. Postavljanje privilegija nad datim direktorijumom (admin only)");
                         System.out.println("6. Nazad");
 
                         choice = scanner.nextLine();

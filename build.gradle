@@ -12,6 +12,8 @@ repositories {
     mavenLocal()
 }
 
+//--console=plain
+
 if(!hasProperty('impl')) ext.impl = 'default'
 
 application {
