@@ -191,15 +191,16 @@ public class Main {
                                         try {
                                             fileStorage.setFolderPrivileges(username, path, Set.of(Privileges.DELETE));
                                             System.out.println("\nUspesno dodata privilegija unetom korisniku na odabranom direktorijumu.");
-                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | FileNotFoundException | CurrentUserIsNullException e) {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
                                         }
+                                        break;
                                     } else if (privilege.equalsIgnoreCase("CREATE")) {
                                         try {
                                             fileStorage.setFolderPrivileges(username, path, Set.of(Privileges.CREATE));
                                             System.out.println("\nUspesno dodata privilegija unetom korisniku na odabranom direktorijumu.");
-                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | FileNotFoundException | CurrentUserIsNullException e) {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
                                         }
@@ -208,7 +209,7 @@ public class Main {
                                         try {
                                             fileStorage.setFolderPrivileges(username, path, Set.of(Privileges.DOWNLOAD));
                                             System.out.println("\nUspesno dodata privilegija unetom korisniku na odabranom direktorijumu.");
-                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | FileNotFoundException | CurrentUserIsNullException e) {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
                                         }
@@ -217,7 +218,7 @@ public class Main {
                                         try {
                                             fileStorage.setFolderPrivileges(username, path, Set.of(Privileges.VIEW));
                                             System.out.println("\nUspesno dodata privilegija unetom korisniku na odabranom direktorijumu.");
-                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | CurrentUserIsNullException e) {
+                                        } catch (UserAlreadyExistsException | InsufficientPrivilegesException | FileNotFoundException | CurrentUserIsNullException e) {
                                             System.out.println("\n-----------------------------------\n" + e.getMessage() + "\n-----------------------------------\n");
                                             break;
                                         }
@@ -388,13 +389,21 @@ public class Main {
                                 break;
 
                             case "5":
-                                System.out.println("\nUnesite putanje do direktorijuma ili fajla koji zelite da obrisete (jedan ili vise), odvojene zarezom:");
+                                if(impl.equals("drive")){
+                                    System.out.println("\nUnesite ime fajla ili direktorijuma koji zelite da obrisete:");
+                                }else {
+                                    System.out.println("\nUnesite putanje do direktorijuma ili fajla koji zelite da obrisete (jedan ili vise), odvojene zarezom:");
+                                }
                                 String fileNames = scanner.nextLine();
                                 String[] paths = fileNames.split(",");
-                                for(int i = 0; i < paths.length; i++)
+                                for(int i = 0; i < paths.length; i++) {
                                     paths[i] = paths[i].replace(" ", "");
+                                }
                                 try {
-                                    fileStorage.delete(paths);
+                                    if(fileNames.contains(","))
+                                        fileStorage.delete(paths);
+                                    else
+                                        fileStorage.delete(fileNames);
                                     System.out.println("\nBrisanje uspesno obavljeno.");
                                     break;
                                 } catch (FileNotFoundException | InsufficientPrivilegesException | FileDeleteFailedException | CurrentUserIsNullException e) {
@@ -403,10 +412,14 @@ public class Main {
                                 break;
 
                             case "6":
-                                System.out.println("\nUnesite putanje do direktorijuma ili fajla (jedan ili vise) koji zelite da preuzmete sa skladista, odvojite fajlove/direktorijume zarezima ukoliko ih ima vise:");
+                                if(impl.equals("drive")){
+                                    System.out.println("\nUnesite ime fajla ili direktorijuma (jedan ili vise) koji zelide da preuzmete sa skladista, odvojite imena zarezima ukoliko ih ima vise:");
+                                } else {
+                                    System.out.println("\nUnesite putanje do direktorijuma ili fajla (jedan ili vise) koji zelite da preuzmete sa skladista, odvojite putanje zarezima ukoliko ih ima vise:");
+                                }
                                 String targetFileNames = scanner.nextLine();
                                 String[] input = targetFileNames.split(",");
-                                for(int i = 0; i < input.length; i++)
+                                for (int i = 0; i < input.length; i++)
                                     input[i] = input[i].replace(" ", "");
                                 try {
                                     fileStorage.get(input);
@@ -450,7 +463,7 @@ public class Main {
                                     System.out.println("\nUnesite putanju destinacionog direktorijuma od korenskog direktorijuma (bez njega):");
                                 }
                                 uploadFolderName = scanner.nextLine();
-                                System.out.println("\nUnesite naziv jednog ili vise fajla da smestite na odabranu lokaciju koristeci zareze da ih razdvajate:");
+                                System.out.println("\nUnesite putanju jednog ili vise fajla da smestite na odabranu lokaciju koristeci zareze da ih razdvajate:");
                                 String uploadFajlovi = scanner.nextLine();
                                 String[] parsirano = uploadFajlovi.split(",");
                                 for(int i = 0; i < parsirano.length; i++) {
@@ -520,10 +533,10 @@ public class Main {
 
                                 while(true){
                                     System.out.println("\nUnesite jednu od ponudjenih operacija:\n1. Filtriranje ekstenzije\n2. Filtriranje naziva fajla\n3. Sortiranje po nazivu fajla" +
-                                    "rastuce\n 4. Sortiranje po nazivu fajla opadajuce\n 5. Filtriranje po datumu poslednje izmene rastuce\n" +
-                                    " 6. Filtriranje po datumu poslednje izmene opadajuce\n 7. Nazad");
+                                    " rastuce\n4. Sortiranje po nazivu fajla opadajuce\n5. Filtriranje po datumu poslednje izmene rastuce\n" +
+                                    "6. Filtriranje po datumu poslednje izmene opadajuce\n7. Nazad");
                                     if(impl.equals("drive")){
-                                        System.out.println("\n8. Sortiranje po datumu kreiranja fajla");
+                                        System.out.println("8. Sortiranje po datumu kreiranja fajla");
                                     }
                                     choice = scanner.nextLine();
                                     String argument;
